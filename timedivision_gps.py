@@ -3,8 +3,9 @@ import numpy as np
 import datetime, time
 import csv
 
-file_name = "20230427194655.record"
-folder = 'G://test/CANBus/'
+marker_time = '2023-05-18 16:19:12.942'
+file_name = "20230518161716.record"
+folder = 'F://P13/7.CANBus/'
 filetype = '.csv'
 fixgpschassis = pd.read_csv(folder  + 'fixgps' + 'chassis--' + file_name + ".csv",
                             usecols=[1, 2, 3])
@@ -43,7 +44,7 @@ def simplifydata(list1, list2, time):
     return timelist, lolist, lalist
 
 
-def findstate(lo, la):
+def findstate_larger(lo, la):
     start = [0]
     finish = [1]
     lo_renew = lo
@@ -202,7 +203,157 @@ def findstate(lo, la):
             break
     return start, finish
 
+def findstate(lo, la):
+    start = [0]
+    finish = [1]
+    lo_renew = lo
+    la_renew = la
 
+    for i in range(len(lo)):  # A1 start
+        if la_renew[i] > 38.00832967:
+            start.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # A1 finish
+        if lo_renew[i] > 113.6266467:
+            finish.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # A2 start
+        if lo_renew[i] > 113.629055:
+            start.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # A2 finish
+        if lo_renew[i] > 113.6303367:
+            finish.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # D1 start
+        if lo_renew[i] > 113.6335834:
+            start.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # D1 finish
+        if 113.6335834 > lo_renew[i] > 0:
+            finish.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # A3 start
+        if 113.6294917 > lo_renew[i] > 0:
+            start.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # A3 finish
+        if la_renew[i] > 38.00917467:
+            finish.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # A4 start
+        if la_renew[i] > 38.011498:
+            start.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # A4 finish
+        if lo_renew[i] > 113.6297433:
+            finish.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # L1 start
+        if lo_renew[i] > 113.6341434:
+            start.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # L1 finish
+        if la_renew[i] > 38.012473:
+            finish.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # L2 start
+        if la_renew[i] > 38.013393:
+            start.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # L2 finish
+        if 113.6339534 > lo_renew[i] > 0:
+            finish.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # R1 start
+        if 113.6295317 > lo_renew[i] > 0:
+            start.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # R1 finish
+        if la_renew[i] > 38.013848:
+            finish.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # R2 start
+        if la_renew[i] > 38.01488133:
+            start.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # R2 finish
+        if lo_renew[i] > 113.62939:
+            finish.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # R3 start
+        if lo_renew[i] > 113.6336234:
+            start.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # R3 finish
+        if 38.01510133 > la_renew[i] > 0:
+            finish.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # R4 start
+        if 38.01400133 > la_renew[i] > 0:
+            start.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # R4 finish
+        if 113.6339534 > lo_renew[i] > 0:
+            finish.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # L3 start
+        if 113.6295317 > lo_renew[i] > 0:
+            start.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    for i in range(len(lo)):  # L3 finish
+        if 38.01296467 > la_renew[i] > 0:
+            finish.append(i)
+            lo_renew[0:i] = 0
+            la_renew[0:i] = 0
+            break
+    return start, finish
 
 def time_transform(t):
     real = []
@@ -230,17 +381,24 @@ finish_time = time_transform(finish_timestamp)
 
 print(start_time)
 print(finish_time)
-
-field = ['state', 'start_time', 'finish_time', 'start_timestamp', 'finish_timestamp', 'duration']
+# field = ['state', 'start_time', 'finish_time', 'start_timestamp', 'finish_timestamp', 'duration']
+field = ['state', 'start_time', 'finish_time', 'start_timestamp', 'finish_timestamp', 'duration', 'relative_time']
 f_timedivision = open(folder  + 'timedivision--' + file_name + ".csv", 'w', newline='')
 writer_timedivision = csv.writer(f_timedivision)
 writer_timedivision.writerow(field)
+
+# marker_time = '2023-05-17 16:09:23.633'
+marker = datetime.datetime.strptime(marker_time, "%Y-%m-%d %H:%M:%S.%f")
 
 for i in range(len(finish_time)):
     time1 = datetime.datetime.strptime(start_time[i], "%Y-%m-%d %H:%M:%S.%f")
     time2 = datetime.datetime.strptime(finish_time[i], "%Y-%m-%d %H:%M:%S.%f")
     duration = (time2 - time1).total_seconds()
-    row = [driving_state[i], start_time[i], finish_time[i], start_timestamp[i], finish_timestamp[i], duration]
+    # duration = format(duration,'.3f')
+    relative = (time1 - marker).total_seconds()
+    # relative = format(relative,'.3f')
+    # row = [driving_state[i], start_time[i], finish_time[i], start_timestamp[i], finish_timestamp[i], duration]
+    row = [driving_state[i], start_time[i], finish_time[i], start_timestamp[i], finish_timestamp[i], duration, relative]
     writer_timedivision.writerow(row)
 
 f_timedivision.close()
