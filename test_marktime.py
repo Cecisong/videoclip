@@ -11,11 +11,17 @@ import matplotlib.pyplot as plt
 import moviepy.editor
 import cv2
 import librosa
+from util import *
 from envload import *
 import datetime
 import subprocess
 
-audio_path = 'G://test/BL/audio.MP3'
+# audio_path = RGB_BASELINE_FOLDER_PATH + PNAME + '-BL-audio.MP3'
+# audio_path = RGB_DRIVER1_FOLDER_PATH + PNAME + '-D1-audio.MP3'
+# audio_path = RGB_DRIVER2_FOLDER_PATH + PNAME + '-D2-audio.MP3'
+# audio_path = RGB_DRIVER3_FOLDER_PATH + PNAME + '-D3-audio.MP3'
+# audio_path = RGB_PASSENGER1_FOLDER_PATH + PNAME + '-P1-audio.MP3'
+audio_path = RGB_PASSENGER2_FOLDER_PATH + PNAME + '-P2-audio.MP3'
 
 def showFigureOnset(y, times, o_env):
     D = np.abs(librosa.stft(y))
@@ -49,3 +55,4 @@ def getMaxOnsetInAudio(audio_path):
 
 max_onset, max_onset_frame, max_onset_time, len_frame_of_time = getMaxOnsetInAudio(audio_path)
 print(max_onset, max_onset_frame, max_onset_time, len_frame_of_time)
+pass  

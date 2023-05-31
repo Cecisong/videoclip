@@ -1,5 +1,8 @@
 from cyber_record.record import Record
 import csv
+from pyproj import Transformer
+from util import *
+from envload import *
 
 MODE_CHASSIS_DETAIL = '/apollo/canbus/chassis_detail'
 MODE_CHASSIS = '/apollo/canbus/chassis'
@@ -16,6 +19,8 @@ EXPRIMENT_TIMESTAMP = [
 
 ]
 
+
+
 # gpsfix
 fixedidx = 1
 LASTGPSLONGITUDE = 0.0
@@ -24,14 +29,16 @@ shiftadd = 0.0165884
 shiftallowed = 113.622
 
 # file_name = "20230410170600.record"
-file_name = "20230517160138.record"
+file_name = APOLLO_RECORD_FILE_INDEX
 # folder = './data/bag/2023-03-30-22-36-41_s/'
 # folder = 'G://P04/'
-folder = 'F://P12/7.CANBus/'
+# folder = 'F://ORED_Dataset//P16//7.CANBus/'
+folder = CANBUS_FOLDER_PATH
 filelist = []
 filetype = '.csv'
+fileCount = getFileCount(CANBUS_FOLDER_PATH, APOLLO_RECORD_FILE_INDEX)
 
-for i in range(24):
+for i in range(fileCount):
    filelist.append(folder + file_name + '.000' + '{:0>2d}'.format(i))
 
 
@@ -69,7 +76,6 @@ def get_fields(mode):
                 ]
    return fields
 
-
 fields_pose = get_fields(MODE_POSE)
 fields_chassis_detail = get_fields(MODE_CHASSIS_DETAIL)
 fields_chassis = get_fields(MODE_CHASSIS)
@@ -88,6 +94,10 @@ writer_module = csv.writer(f_module)
 writer_pose.writerow(fields_pose)
 writer_chassis_detail.writerow(fields_chassis_detail)
 writer_chassis.writerow(fields_chassis)
+
+# GPS Transformer (Apollo WGS84 to Beijing 1954 Coordinate System)
+# Create a transformer object that defines the source and destination coordinate systems
+transformer = Transformer.from_crs('EPSG:4326', 'EPSG:4214', always_xy=True)
 
 def parse_pose(pose, time):
    '''
@@ -138,6 +148,7 @@ def parse_chassis(chassis, time, lastgpslongitude):
    '''
    save chassis to csv file
    '''
+   # target_longitude, target_latitude = transformer.transform(getfixlongitude(lastgpslongitude, chassis.chassis_gps.longitude), chassis.chassis_gps.latitude)
    row = ['chassis', time,
           chassis.chassis_gps.latitude, getfixlongitude(lastgpslongitude, chassis.chassis_gps.longitude), chassis.chassis_gps.altitude, chassis.chassis_gps.longitude,
           chassis.chassis_gps.gps_valid,
@@ -155,6 +166,7 @@ def parse_chassis(chassis, time, lastgpslongitude):
           ]
    writer_chassis.writerow(row)
    lastgpslongitude = chassis.chassis_gps.longitude
+
 
 for fp in filelist:
    try:
