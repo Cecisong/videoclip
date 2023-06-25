@@ -232,12 +232,16 @@ def run_timedivision():
 
     bl_start = (marker + relativedelta(seconds=15)).strftime("%Y-%m-%d %H:%M:%S.%f")
     bl_finish = (marker + relativedelta(seconds=75)).strftime("%Y-%m-%d %H:%M:%S.%f")
+    bl_starttime = time.strptime(bl_start, "%Y-%m-%d %H:%M:%S.%f")
+    bl_finishtime = time.strptime(bl_finish, "%Y-%m-%d %H:%M:%S.%f")
+    bl_startstamp = time.mktime(bl_starttime)
+    bl_finishstamp = time.mktime(bl_finishtime)
     start_time = np.append(bl_start, start_time)
     finish_time = np.append(bl_finish, finish_time)
     print(start_time)
     print(finish_time)
-    start_timestamp = np.append(0, start_timestamp)
-    finish_timestamp = np.append(0, finish_timestamp)
+    start_timestamp = np.append(bl_startstamp, start_timestamp)
+    finish_timestamp = np.append(bl_finishstamp, finish_timestamp)
 
     # print(start_time)
     # print(finish_time)
