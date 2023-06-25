@@ -27,8 +27,8 @@ def simplifydata(list1, list2, time):
     return timelist, lolist, lalist
 
 def findstate(lo, la):
-    start = [0]
-    finish = [1]
+    start = []
+    finish = []
     lo_renew = lo
     la_renew = la
 
